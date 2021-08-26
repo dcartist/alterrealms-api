@@ -22,7 +22,7 @@ router.get("/character/win/:id", (req,res)=> {
             console.log("oops!");
         }
         res.json(results)
-    }).catch(err=>console.log(err))
+    })
 })
 router.get("/character/lost/:id", (req,res)=> {
     Character.findOneAndUpdate({id: req.params.id}, {$inc:{lost: 1, rounds:1}}, {new: true}, (err, results) => {
@@ -30,7 +30,7 @@ router.get("/character/lost/:id", (req,res)=> {
             console.log("oops!");
         }
         res.json(results)
-    }).catch(err=>console.log(err))
+    })
 })
 router.get("/character/species/:species", (req,res)=> {
     Character.find({ species: req.params.species }).then( results => {
