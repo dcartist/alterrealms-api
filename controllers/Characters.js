@@ -10,10 +10,39 @@ router.get("/", (req, res) => {
   });
 });
 
-router.get("/character/:id", (req,res)=> {
+router.get("/character/id/:id", (req,res)=> {
     Character.findOne({ id: req.params.id }).then( results => {
         res.json(results)
     })
+})
+
+router.get("/character/win/:id", (req,res)=> {
+    Character.findOneAndUpdate({id: req.params.id}, {$inc:{wins: 1, rounds:1}}, {new: true}, (err, results) => {
+        if (err) {
+            console.log("oops!");
+        }
+        res.json(results)
+    }).catch(err=>console.log(err))
+})
+router.get("/character/lost/:id", (req,res)=> {
+    Character.findOneAndUpdate({id: req.params.id}, {$inc:{lost: 1, rounds:1}}, {new: true}, (err, results) => {
+        if (err) {
+            console.log("oops!");
+        }
+        res.json(results)
+    }).catch(err=>console.log(err))
+})
+router.get("/character/species/:species", (req,res)=> {
+    Character.find({ species: req.params.species }).then( results => {
+        res.json(results)
+    })
+})
+
+router.get("/alter", (req, res) => {
+    Character.deleteMany().then( results => {
+        res.json({"nothing":"here"});
+    }
+    )
 })
 
 
