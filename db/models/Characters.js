@@ -10,20 +10,20 @@ const CharacterSchema = mongoose.Schema({
     species: {
       type: String
     },
-    origin: {
+    origin_name: {
       type: String
     },
     origin_url: {
       type: String
     },
-    location: {
+    location_name: {
       type: String
     },
     location_url: {
       type: String
     },
-    times_used: {
-      type: Number
+    type: {
+      type: String
     },
     wins: {
       type: Number

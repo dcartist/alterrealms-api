@@ -15,7 +15,7 @@ app.use(cors())
 app.get('/', function (req, res) {
   res.send('Hello World!')
 })
-app.use('/api/characters', characterController)
+app.use('/api', characterController)
 app.get('/morty', function (req, res) {
   // let morty = {}
   let url = "https://rickandmortyapi.com/api/character"
