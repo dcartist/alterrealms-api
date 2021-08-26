@@ -50,7 +50,6 @@ function grabupdate (){
         .then(results => {
           morty = results.data;
         altered(morty.results, finalResults)
-        // console.log(morty.results)
         Character.create(morty.results).then(results => {
             console.log(`page ${i}`)
         })
