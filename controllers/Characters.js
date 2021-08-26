@@ -38,6 +38,33 @@ router.get("/character/species/:species", (req,res)=> {
     })
 })
 
+router.get("/top/wins", (req, res) => {
+    Character.find({}).then(
+        results => {
+            results.sort((a, b) => b.wins - a.wins);
+            console.log()
+            res.json(results.splice(0,5).filter(character => character.wins !== 0))
+        }
+    )
+})
+router.get("/top/player", (req, res) => {
+    Character.find({}).then(
+        results => {
+            results.sort((a, b) => b.rounds - a.rounds);
+            console.log()
+            res.json(results.splice(0,5).filter(character => character.rounds !== 0))
+        }
+    )
+})
+router.get("/top/losts", (req, res) => {
+    Character.find({}).then(
+        results => {
+            results.sort((a, b) => b.lost - a.lost);
+            res.json(results.splice(0,5).filter(character => character.lost !== 0))
+        }
+    )
+})
+
 router.get("/alter", (req, res) => {
     Character.deleteMany().then( results => {
         res.json({"nothing":"here"});
@@ -62,21 +89,6 @@ function altered(info, finalResults){
     return finalResults
 
 }
-// router.get("/add", (req, res) => {
-//     let finalResults = []
-//     let morty
-//     let url = "https://rickandmortyapi.com/api/character"
-//     axios.get(url)
-//     .then(results => {
-//       morty = results.data;
-//     altered(morty.results, finalResults)
-//     console.log(morty.results)
-//     Character.findOrCreate(morty.results).then(results => {
-//         res.json(results)
-//     })
-//     }).catch(err=>console.log(err))
-
-// })
 
 function grabupdate (){
     let finalResults = []
