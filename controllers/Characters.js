@@ -1,7 +1,6 @@
 const express = require("express");
 const Character = require("../db/models/Characters");
 const axios = require('axios');
-const { findOne } = require("../db/models/Characters");
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -10,12 +9,23 @@ router.get("/", (req, res) => {
   });
 });
 
+//* Finding by name
+router.get("/character/name/:name", (req, res) => {
+    Character.find().then(allUsers => {
+    var results = allUsers.filter(item => item.name.toLowerCase().includes(req.params.name.toLowerCase()))
+    res.json(results);
+
+  });
+});
+
+//* Finding by id
 router.get("/character/id/:id", (req,res)=> {
     Character.findOne({ id: req.params.id }).then( results => {
         res.json(results)
     })
 })
 
+//* Adding a win to an id
 router.get("/character/win/:id", (req,res)=> {
     Character.findOneAndUpdate({id: req.params.id}, {$inc:{wins: 1, rounds:1}}, {new: true}, (err, results) => {
         if (err) {
@@ -24,7 +34,9 @@ router.get("/character/win/:id", (req,res)=> {
         res.json(results)
     })
 })
-router.get("/character/lost/:id", (req,res)=> {
+
+//* Adding a lose to an id
+router.get("/character/lose/:id", (req,res)=> {
     Character.findOneAndUpdate({id: req.params.id}, {$inc:{lost: 1, rounds:1}}, {new: true}, (err, results) => {
         if (err) {
             console.log("oops!");
@@ -32,12 +44,15 @@ router.get("/character/lost/:id", (req,res)=> {
         res.json(results)
     })
 })
+
+//* Finding by species
 router.get("/character/species/:species", (req,res)=> {
     Character.find({ species: req.params.species }).then( results => {
         res.json(results)
     })
 })
 
+//* Showing top 5 wins
 router.get("/top/wins", (req, res) => {
     Character.find({}).then(
         results => {
@@ -47,6 +62,9 @@ router.get("/top/wins", (req, res) => {
         }
     )
 })
+
+
+//* Showing top 5 players
 router.get("/top/player", (req, res) => {
     Character.find({}).then(
         results => {
@@ -56,6 +74,9 @@ router.get("/top/player", (req, res) => {
         }
     )
 })
+
+
+//* Showing top 5 losses
 router.get("/top/losts", (req, res) => {
     Character.find({}).then(
         results => {
@@ -65,6 +86,7 @@ router.get("/top/losts", (req, res) => {
     )
 })
 
+//* Droping Db
 router.get("/alter", (req, res) => {
     Character.deleteMany().then( results => {
         res.json({"nothing":"here"});
@@ -73,6 +95,7 @@ router.get("/alter", (req, res) => {
 })
 
 
+//* Altering data for db
 function altered(info, finalResults){
     finalResults = info.map(data => {
         data.image_url = data.image
@@ -90,6 +113,8 @@ function altered(info, finalResults){
 
 }
 
+
+//* Inserting all characters into database from Rick&Morty API
 function grabupdate (){
     let finalResults = []
     let morty
@@ -105,14 +130,20 @@ function grabupdate (){
         }).catch(err=>console.log(err))
     }
 }
+
+
+//* Route to start the population process
 router.get("/auto", (req, res) => {
     grabupdate ()
     Character.find().then(allUsers => {
-        res.json(allUsers);
+        res.send("And We're done");
     })
 }
 
 )
+
+
+//* Adding a page from rick and morty api
 router.get("/add/:number", (req, res) => {
 
     let finalResults = []
