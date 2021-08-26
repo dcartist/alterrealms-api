@@ -1,6 +1,7 @@
 const express = require("express");
 const Character = require("../db/models/Characters");
-const axios = require('axios')
+const axios = require('axios');
+const { findOne } = require("../db/models/Characters");
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -8,6 +9,13 @@ router.get("/", (req, res) => {
     res.json(allUsers);
   });
 });
+
+router.get("/character/:id", (req,res)=> {
+    Character.findOne({ id: req.params.id }).then( results => {
+        res.json(results)
+    })
+})
+
 
 function altered(info, finalResults){
     finalResults = info.map(data => {
@@ -25,21 +33,21 @@ function altered(info, finalResults){
     return finalResults
 
 }
-router.get("/add", (req, res) => {
-    let finalResults = []
-    let morty
-    let url = "https://rickandmortyapi.com/api/character"
-    axios.get(url)
-    .then(results => {
-      morty = results.data;
-    altered(morty.results, finalResults)
-    console.log(morty.results)
-    Character.findOrCreate(morty.results).then(results => {
-        res.json(results)
-    })
-    }).catch(err=>console.log(err))
+// router.get("/add", (req, res) => {
+//     let finalResults = []
+//     let morty
+//     let url = "https://rickandmortyapi.com/api/character"
+//     axios.get(url)
+//     .then(results => {
+//       morty = results.data;
+//     altered(morty.results, finalResults)
+//     console.log(morty.results)
+//     Character.findOrCreate(morty.results).then(results => {
+//         res.json(results)
+//     })
+//     }).catch(err=>console.log(err))
 
-})
+// })
 
 function grabupdate (){
     let finalResults = []
@@ -80,17 +88,6 @@ router.get("/add/:number", (req, res) => {
     })
     }).catch(err=>console.log(err))
 })
-// router.get("/adding/:numner", (req, res) => {
-//     let url = "https://rickandmortyapi.com/api/character"
-//     axios.get(url)
-//     .then(results => {
-//       morty = results.data;
-//       return res.json(morty)
-//      console.log( results)
-//     }).catch(err=>console.log(err))
-
-//     res.json(adding);
-// })
 
 
 
