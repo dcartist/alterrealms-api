@@ -34,7 +34,10 @@ const CharacterSchema = mongoose.Schema({
     image_url: {
       type: String
     },
-    lost: {
+    losses: {
+      type: Number
+    },
+    ties: {
       type: Number
     }
 });

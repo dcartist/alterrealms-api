@@ -8,6 +8,11 @@ router.get("/", (req, res) => {
     res.json(allUsers);
   });
 });
+router.get("/top/20", (req, res) => {
+    Character.find().then(allUsers => {
+    res.json(allUsers.splice(0,20));
+  });
+});
 
 //* Finding by name
 router.get("/character/name/:name", (req, res) => {
@@ -17,6 +22,23 @@ router.get("/character/name/:name", (req, res) => {
 
   });
 });
+//* Finding not Sanchez Family
+// Rick Morty Beth Jerry Summer
+router.get("/character/notfamily", (req, res) => {
+    let sanchez = ["jerry", "beth", "jerry", "summer"]
+    Character.find({}).then(allUsers => {
+    let results =  sanchez.map(name => allUsers.filter (item => !item.name.toLowerCase().includes(name.toLowerCase())) )
+    //  filteredResults = allUsers.filter(item => !item.name.toLowerCase().includes(req.params.name.toLowerCase()))
+    res.json(results);
+
+  });
+});
+
+
+//* Finding not Jerry
+
+
+
 
 //* Finding by id
 router.get("/character/id/:id", (req,res)=> {
@@ -34,10 +56,25 @@ router.get("/character/win/:id", (req,res)=> {
         res.json(results)
     })
 })
+//* Adding tie to two ids
+router.get("/character/tie/:id1/:id2", (req,res)=> {
+    Character.updateMany(
+        { id: { $in: [req.params.id1, req.params.id2] } },
+        { $inc: {ties: 1, rounds:1} },
+        { multi: true, new: true},
+        
+     ).then(
+         results => {
+            Character.find({id: { $in: [req.params.id1, req.params.id2] }}).then( 
+                results => res.json(results)
+                )
+        }
+     ).catch(err=> res.json(err))
+})
 
 //* Adding a lose to an id
 router.get("/character/lose/:id", (req,res)=> {
-    Character.findOneAndUpdate({id: req.params.id}, {$inc:{lost: 1, rounds:1}}, {new: true}, (err, results) => {
+    Character.findOneAndUpdate({id: req.params.id}, {$inc:{losses: 1, rounds:1}}, {new: true}, (err, results) => {
         if (err) {
             console.log("oops!");
         }
@@ -52,7 +89,7 @@ router.get("/character/species/:species", (req,res)=> {
     })
 })
 
-//* Showing top 5 wins
+//* Showing top 5 winners
 router.get("/top/wins", (req, res) => {
     Character.find({}).then(
         results => {
@@ -64,7 +101,7 @@ router.get("/top/wins", (req, res) => {
 })
 
 
-//* Showing top 5 players
+//* Showing top 5 played characters
 router.get("/top/player", (req, res) => {
     Character.find({}).then(
         results => {
@@ -76,12 +113,12 @@ router.get("/top/player", (req, res) => {
 })
 
 
-//* Showing top 5 losses
-router.get("/top/losts", (req, res) => {
+//* Showing top 5 losers
+router.get("/top/losses", (req, res) => {
     Character.find({}).then(
         results => {
-            results.sort((a, b) => b.lost - a.lost);
-            res.json(results.splice(0,5).filter(character => character.lost !== 0))
+            results.sort((a, b) => b.losses - a.losses);
+            res.json(results.splice(0,5).filter(character => character.losses !== 0))
         }
     )
 })
@@ -104,7 +141,8 @@ function altered(info, finalResults){
         data.location_name = data.location.name
         data.location_url = data.location.url
         data.wins = 0
-        data.lost = 0
+        data.losses = 0
+        data.ties = 0
         data.rounds = 0
 
     })
@@ -135,9 +173,7 @@ function grabupdate (){
 //* Route to start the population process
 router.get("/auto", (req, res) => {
     grabupdate ()
-    Character.find().then(allUsers => {
-        res.send("And We're done");
-    })
+    Character.find().then(allUsers =>res.send(`And We're done ${allUsers.length}`))
 }
 
 )
