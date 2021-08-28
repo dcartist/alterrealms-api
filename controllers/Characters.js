@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
   });
 });
 router.get("/top/20", (req, res) => {
-    Character.find().then(allUsers => {
+    Character.find({}).sort({id: 0}).then(allUsers => {
     res.json(allUsers.splice(0,20));
   });
 });
