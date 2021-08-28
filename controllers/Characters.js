@@ -111,6 +111,15 @@ router.get("/top/player", (req, res) => {
         }
     )
 })
+//* Showing top 5 tied characters
+router.get("/top/tied", (req, res) => {
+    Character.find({}).then(
+        results => {
+            results.sort((a, b) => b.ties - a.ties);
+            res.json(results.splice(0,5).filter(character => character.ties !== 0))
+        }
+    )
+})
 
 
 //* Showing top 5 losers
@@ -197,6 +206,31 @@ router.get("/add/:number", (req, res) => {
     }).catch(err=>console.log(err))
 })
 
+//* Adding Pagination
+router.get("/page/:skip/:limit", (req, res) => {
+    let limit = parseInt(req.params.limit) //turning information of limit into a number instead of a string
+    let skip = (parseInt(req.params.skip)-1) * limit //turning information of skip into a number instead of a string
+
+    //also skip is how many records to skip, so skip is skip - 1 because records start at 0, and multiply it by the limit (items per page)
+    Character.find({},null,{limit:limit,skip:skip}).then(results => {res.json(results)}).catch(err=>console.log(err))
+})
+
+router.get("/characters/page/:skip/:limit", (req, res) => {
+    let limit = parseInt(req.params.limit)
+    let skip = (parseInt(req.params.skip)-1) * limit
+
+    Character.find({},null,{limit:limit,skip:skip}).then(data => {
+        let results = {};
+        for(var i=0;i<data.length;i++){
+            results[i+skip]=data[i];
+        }
+        // data.forEach((item,index) => {data[index]['sortOrder']=i;
+        // i++;}
+        // )
+
+        res.json(results)
+    }).catch(err=>console.log(err))
+})
 
 
 module.exports = router
