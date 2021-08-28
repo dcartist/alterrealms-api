@@ -47,6 +47,19 @@ router.get("/character/id/:id", (req,res)=> {
     })
 })
 
+//* Adding win and loose in call
+router.get("/gameplay/results/:win/:lose", (req,res)=> {
+    Character.findOneAndUpdate({id: req.params.win}, {$inc:{wins: 1, rounds:1}}, {new: true}).then(
+        winresults => {
+            Character.findOneAndUpdate({id: req.params.lose}, {$inc:{losses: 1, rounds:1}}, {new: true}).then( loseResults => {
+                Character.find({id: { $in: [req.params.win, req.params.lose] }}).then( 
+                    results => res.json(results)
+                    )
+            })
+        }
+    ).catch(err=>console.log(err))
+})
+
 //* Adding a win to an id
 router.get("/character/win/:id", (req,res)=> {
     Character.findOneAndUpdate({id: req.params.id}, {$inc:{wins: 1, rounds:1}}, {new: true}, (err, results) => {
@@ -57,7 +70,7 @@ router.get("/character/win/:id", (req,res)=> {
     })
 })
 //* Adding tie to two ids
-router.get("/character/tie/:id1/:id2", (req,res)=> {
+router.get("/gameplay/tie/:id1/:id2", (req,res)=> {
     Character.updateMany(
         { id: { $in: [req.params.id1, req.params.id2] } },
         { $inc: {ties: 1, rounds:1} },
