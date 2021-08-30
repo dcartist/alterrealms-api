@@ -17,7 +17,9 @@ router.get("/top/20", (req, res) => {
 //* Finding by name
 router.get("/character/name/:name", (req, res) => {
     Character.find().then(allUsers => {
-    var results = allUsers.filter(item => item.name.toLowerCase().includes(req.params.name.toLowerCase()))
+    let firstSearch = allUsers.filter(item => item.name.toLowerCase().includes(req.params.name.toLowerCase()))
+    // let results = firstSearch.filter(item => !item.name.includes("’s") || !item.name.includes("'s") || !item.name.includes("’s") ||  !item.name.includes("’s") )
+    let results = firstSearch.filter(item => !item.name.includes("’s") && !item.name.includes("'s") )
     res.json(results);
 
   });
