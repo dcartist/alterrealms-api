@@ -63,7 +63,7 @@ router.get("/gameplay/results/:win/:lose", (req,res)=> {
 })
 
 //* Adding a win to an id
-router.get("/character/win/:id", (req,res)=> {
+router.get("/gameplay/win/:id", (req,res)=> {
     Character.findOneAndUpdate({id: req.params.id}, {$inc:{wins: 1, rounds:1}}, {new: true}, (err, results) => {
         if (err) {
             console.log("oops!");
@@ -88,7 +88,7 @@ router.get("/gameplay/tie/:id1/:id2", (req,res)=> {
 })
 
 //* Adding a lose to an id
-router.get("/character/lose/:id", (req,res)=> {
+router.get("/gameplay/lose/:id", (req,res)=> {
     Character.findOneAndUpdate({id: req.params.id}, {$inc:{losses: 1, rounds:1}}, {new: true}, (err, results) => {
         if (err) {
             console.log("oops!");
