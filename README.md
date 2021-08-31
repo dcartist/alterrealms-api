@@ -121,6 +121,3 @@ Paula Bannerman
 
 `/gameplay/tie/{winner id}/{loser id}`
 
-
-
-- 
