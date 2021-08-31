@@ -4,6 +4,14 @@
 
 ![alter realm](alterRealm.png)
 
+
+
+# For Heroku App
+
+https://immense-refuge-56824.herokuapp.com/api/
+
+
+
 ## About
 
 **deployed link:** https://alterrealms.vercel.app
@@ -11,6 +19,8 @@
 **backend repo:** https://github.com/dcartist/alterrealms-api
 
 **backend link:** https://immense-refuge-56824.herokuapp.com/api
+
+
 
 ### **Created by:** 
 
@@ -23,6 +33,14 @@ Paula Bannerman
 **When:** built during the Mintbean hackathon
 **Duration of Creation:** 1 week
 
+### **Technologies Used:**
+
+- Express JS
+
+- MongoDB
+
+  
+
 ## Installation Instructions
 
 - Clone and download the project
@@ -34,10 +52,6 @@ Paula Bannerman
 - use `node index.js` to start the project
 
   
-
-# For Heroku App
-
-https://immense-refuge-56824.herokuapp.com/api/
 
 ## Response Data:
 
@@ -99,14 +113,14 @@ https://immense-refuge-56824.herokuapp.com/api/
 
 `api/top/player`
 
-
-
 ##### Setting winner and looser
 
-/gameplay/results/{winner id}/{loser id}
-
-
+`/gameplay/results/{winner id}/{loser id}`
 
 ##### Setting tie
 
-/gameplay/tie/{winner id}/{loser id}
+`/gameplay/tie/{winner id}/{loser id}`
+
+
+
+- 
