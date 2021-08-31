@@ -14,6 +14,8 @@ https://immense-refuge-56824.herokuapp.com/api/
 
 ## About
 
+The backend API for Alter Realm. This API grabs the data from Rick and Morty API and builds a custom
+
 **deployed link:** https://alterrealms.vercel.app
 
 **backend repo:** https://github.com/dcartist/alterrealms-api
