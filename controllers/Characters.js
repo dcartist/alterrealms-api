@@ -2,12 +2,30 @@ const express = require("express");
 const Character = require("../db/models/Characters");
 const axios = require('axios');
 const router = express.Router();
-
+var fs = require('fs');
+const writeStream = fs.createWriteStream('file.txt');
 router.get("/", (req, res) => {
     Character.find().then(allUsers => {
     res.json(allUsers);
   });
 });
+
+// router.get("/name", (req, res) => {
+//     let user = []
+//     Character.find().then(allUsers => {
+//     allUsers.map(item=>user.push(item.name))
+//     console.log(user)
+//     user.forEach(value => writeStream.write(`"${value}",\n`));
+//     // fs.writeFile('text.txt', user, function (err) {
+//     //     if (err) throw err;
+//     //     console.log('Saved!');
+//     //   });
+//     res.json(allUsers);
+//   });
+// });
+
+
+
 router.get("/top/20", (req, res) => {
     Character.find({}).sort({id: 0}).then(allUsers => {
     res.json(allUsers.splice(0,20));
