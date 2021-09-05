@@ -3,7 +3,6 @@ const Character = require("../db/models/Characters");
 const axios = require('axios');
 const router = express.Router();
 var fs = require('fs');
-const e = require("express");
 const writeStream = fs.createWriteStream('file.txt');
 router.get("/", (req, res) => {
     Character.find().then(allUsers => {
@@ -37,27 +36,24 @@ router.get("/top/20", (req, res) => {
 router.get("/character/name/:name", (req, res) => {
     Character.find().then(allUsers => {
     let firstSearch = allUsers.filter(item => item.name.toLowerCase().includes(req.params.name.toLowerCase()))
-    res.json(firstSearch)
-    // if (!req.params.name.includes("’s")){
-    //     let results = firstSearch.filter(item => !item.name.includes("’s") && !item.name.includes("'s") )
-    //     res.json(results);
-    // } else {
-    //     res.json(firstSearch)
-    // }
+    // let results = firstSearch.filter(item => !item.name.includes("’s") || !item.name.includes("'s") || !item.name.includes("’s") ||  !item.name.includes("’s") )
+    // let results = firstSearch.filter(item => !item.name.includes("’s") && !item.name.includes("'s") )
+    res.json(firstSearch);
+
   });
 });
 
-//*finding by all certain names
 
+//* finding by all certain characters
 router.get("/character/all/name/:name", (req, res) => {
     Character.find().then(allUsers => {
     let firstSearch = allUsers.filter(item => item.name.toLowerCase().includes(req.params.name.toLowerCase()))
+    // let results = firstSearch.filter(item => !item.name.includes("’s") || !item.name.includes("'s") || !item.name.includes("’s") ||  !item.name.includes("’s") )
     let results = firstSearch.filter(item => !item.name.includes("’s") && !item.name.includes("'s") )
     res.json(results);
-        
+
   });
 });
-
 
 //* Finding not Sanchez Family
 // Rick Morty Beth Jerry Summer
