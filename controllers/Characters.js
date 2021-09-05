@@ -52,12 +52,9 @@ router.get("/character/name/:name", (req, res) => {
 router.get("/character/all/name/:name", (req, res) => {
     Character.find().then(allUsers => {
     let firstSearch = allUsers.filter(item => item.name.toLowerCase().includes(req.params.name.toLowerCase()))
-    if (!req.params.name.includes("’s")){
-        let results = firstSearch.filter(item => !item.name.includes("’s") && !item.name.includes("'s") )
-        res.json(results);
-    } else {
-        res.json(firstSearch)
-    }
+    let results = firstSearch.filter(item => !item.name.includes("’s") && !item.name.includes("'s") )
+    res.json(results);
+        
   });
 });
 
